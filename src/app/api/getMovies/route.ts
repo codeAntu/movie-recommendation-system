@@ -20,7 +20,10 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json({ movies: moviesList });
-  } catch (error) {
-    return NextResponse.json({ error: error }, { status: 400 })
+  } catch  (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    return NextResponse.json({ error: "An unknown error occurred" }, { status: 400 });
   }    
 }
